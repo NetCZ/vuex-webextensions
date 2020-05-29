@@ -86,7 +86,11 @@ class ContentScript {
         }
 
         this.receivedMutations.push(message.data);
-        this.store.commit(message.data.type, message.data.payload);
+        if (message.data.payload.expr) {
+          this.store.set(message.data.payload.expr, message.data.payload.value);
+        } else {
+          this.store.commit(message.data.type, message.data.payload);
+        }
         break;
       }
 

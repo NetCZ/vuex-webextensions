@@ -33,6 +33,9 @@
     "url": "https://github.com/MitsuhaKitsune/vuex-webextensions/issues"
   },
   "homepage": "https://github.com/MitsuhaKitsune/vuex-webextensions#readme",
+  "dependencies": {
+    "lodash.isequal": "^4.5.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",

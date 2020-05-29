@@ -154,7 +154,11 @@ class BackgroundScript {
       // Process mutation messages from content scripts
       case '@@STORE_SYNC_MUTATION': {
         connection.receivedMutations.push(message.data);
-        this.store.commit(message.data.type, message.data.payload);
+        if (message.data.payload.expr) {
+          this.store.set(message.data.payload.expr, message.data.payload.value);
+        } else {
+          this.store.commit(message.data.type, message.data.payload);
+        }
         break;
       }
 
@@ -175,7 +179,7 @@ class BackgroundScript {
     try {
       connection.postMessage({
         type: '@@STORE_SYNC_STATE',
-        data: this.store._modules.root.state
+        data: JSON.parse(JSON.stringify(this.store._modules.root.state))
       });
     } catch (err) {
       Logger.error(`Initial state not sent: ${err}`);
