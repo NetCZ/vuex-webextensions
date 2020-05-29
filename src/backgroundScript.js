@@ -175,7 +175,7 @@ class BackgroundScript {
     try {
       connection.postMessage({
         type: '@@STORE_SYNC_STATE',
-        data: this.store.state
+        data: this.store._modules.root.state
       });
     } catch (err) {
       Logger.error(`Initial state not sent: ${err}`);
