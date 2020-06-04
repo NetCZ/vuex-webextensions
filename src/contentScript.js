@@ -4,6 +4,7 @@
  */
 
 import Logger from './logger';
+import isEqual from 'lodash.isequal';
 
 class ContentScript {
   constructor(store, browser, settings) {
@@ -151,7 +152,15 @@ class ContentScript {
 
     // Check if it's received mutation, if it's just ignore it, if not send to background
     for (var i = this.receivedMutations.length - 1; i >= 0; i--) {
-      if (this.receivedMutations[i].type == mutation.type && this.receivedMutations[i].payload == mutation.payload) {
+      if (
+        this.receivedMutations[i].type == mutation.type &&
+        isEqual(
+          { ...this.receivedMutations[i].payload },
+          {
+            ...mutation.payload
+          }
+        )
+      ) {
         Logger.verbose(`Mutation ${this.receivedMutations[i].type} it's received mutation, don't send to background again`);
         this.receivedMutations.splice(i, 1);
       } else if (i == 0) {

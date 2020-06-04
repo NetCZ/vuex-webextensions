@@ -5,6 +5,7 @@
 
 import Logger from './logger';
 import { filterObject } from './utils';
+import isEqual from 'lodash.isequal';
 
 class BackgroundScript {
   constructor(store, browser, settings) {
@@ -60,7 +61,7 @@ class BackgroundScript {
 
         // Check if is one of his mutations
         for (var j = this.connections[i].receivedMutations.length - 1; j >= 0; j--) {
-          if (this.connections[i].receivedMutations[j].type == mutation.type && this.connections[i].receivedMutations[j].payload == mutation.payload) {
+          if (this.connections[i].receivedMutations[j].type == mutation.type && isEqual({ ...this.connections[i].receivedMutations[j].payload }, { ...mutation.payload })) {
             this.connections[i].receivedMutations.splice(j, 1);
           } else if (i == 0) {
             this.sendMutation(this.connections[i], mutation);
